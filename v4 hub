@@ -1,232 +1,232 @@
-local Roact = require(game.ReplicatedStorage:WaitForChild("Roact"))
+local Window = {} -- Supondo que 'Window' seja uma biblioteca de interface de usuário que você está usando
 
--- Funções de Utilidade
-local function invokeServer(args)
-    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-end
+-- Adiciona a aba Race V4
+local Race = Window:AddTab({ Title = "Race V4", Icon = "rbxassetid://88147973848189" })
 
-local function GetDistance(pos1, pos2)
-    return (pos1 - pos2).Magnitude
-end
+-- Funções RaceV4
 
-local function Tweento(targetCFrame)
-    -- Implementação para tweening
-end
+-- Timple Of Time
+Race:AddButton({
+    Title = "Timple Of Time",
+    Description = "",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(28286.35546875, 14895.3017578125, 102.62469482421875))
+    end
+})
 
-local function firetouchinterest(part, humanoidRootPart, toggle)
-    -- Implementação para fire touch interest
-end
+-- Lever Pull
+Race:AddButton({
+    Title = "Lever Pull",
+    Description = "",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(28286.35546875, 14895.3017578125, 102.62469482421875))
+        wait(0.5)
+        Tween2(CFrame.new(28575.181640625, 14936.6279296875, 72.31636810302734))
+    end
+})
 
-local function CheckColorRipIndra()
-    -- Implementação para verificar cores
-end
+-- Acient One
+Race:AddButton({
+    Title = "Acient One",
+    Description = "",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(28286.35546875, 14895.3017578125, 102.62469482421875))
+        wait(0.5)
+        Tween2(CFrame.new(28981.552734375, 14888.4267578125, -120.245849609375))
+    end
+})
 
--- Funções principais relacionadas à V4
-local function CheckColorHas()
-    local ColorsHas = {}
-    for i, v in pairs(game.ReplicatedStorage.Remotes.CommF_:InvokeServer("getColors")) do
-        if v["Unlocked"] then
-            ColorsHas[v.HiddenName] = v
+-- Seção Auto Race
+local Mastery = Race:AddSection("Auto Race")
+
+-- Race Door
+Race:AddButton({
+    Title = "Race Door",
+    Description = "",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", Vector3.new(28286.35546875, 14895.3017578125, 102.62469482421875))
+        wait(0.5)
+        local race = game:GetService("Players").LocalPlayer.Data.Race.Value
+        if race == "Human" then
+            Tween2(CFrame.new(29221.822265625, 14890.9755859375, -205.99114990234375))
+        elseif race == "Skypiea" then
+            Tween2(CFrame.new(28960.158203125, 14919.6240234375, 235.03948974609375))
+        elseif race == "Fishman" then
+            Tween2(CFrame.new(28231.17578125, 14890.9755859375, -211.64173889160156))
+        elseif race == "Cyborg" then
+            Tween2(CFrame.new(28502.681640625, 14895.9755859375, -423.7279357910156))
+        elseif race == "Ghoul" then
+            Tween2(CFrame.new(28674.244140625, 14890.6767578125, 445.4310607910156))
+        elseif race == "Mink" then
+            Tween2(CFrame.new(29012.341796875, 14890.9755859375, -380.1492614746094))
         end
     end
-    return ColorsHas
-end
+})
 
-local function CheckDoneColor()
-    for i, v in next, game:GetService("Workspace").Map["BoatCastle"].Summoner.Circle:GetChildren() do
-        if v:IsA("Part") and v:FindFirstChild("Part") and v.Part.BrickColor.Name == "Dark stone grey" then
-            return false
-        end
-    end
-    return true
-end
+-- Auto [ Human / Ghoul ] Trial
+local ToggleHumanandghoul = Race:AddToggle("ToggleHumanandghoul", {Title = "Auto [ Human / Ghoul ] Trial", Description = "", Default = false })
+ToggleHumanandghoul:OnChanged(function(Value)
+    KillAura = Value
+end)
+Options.ToggleHumanandghoul:SetValue(false)
 
-local function ActivateColor(ColorName)
-    local concho = {
-        ["Hot pink"] = "Winter Sky",
-        ["Really red"] = "Pure Red",
-        ["Oyster"] = "Snow White"
-    }
-    local conchogg = concho[ColorName]
-    if not CheckColorHas()[conchogg] then return "Cant" end
-    if conchogg then
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("activateColor", conchogg)
-    end
-end
+-- Auto Trial
+local ToggleAutotrial = Race:AddToggle("ToggleAutotrial", {Title = "Auto Trial", Description = "", Default = false })
+ToggleAutotrial:OnChanged(function(Value)
+    _G.AutoQuestRace = Value
+end)
+Options.ToggleAutotrial:SetValue(false)
 
-local function AutoActiveColorRip_Indra()
-    for i, v in pairs(CheckColorRipIndra()) do
-        local kss = ActivateColor(i)
-        if kss ~= "Cant" then
-            Tweento(v.CFrame)
-            wait(3)
-            firetouchinterest(v.Part, game.Players.LocalPlayer.Character.HumanoidRootPart, 0)
-            firetouchinterest(v.Part, game.Players.LocalPlayer.Character.HumanoidRootPart, 1)
-        end
-    end
-end
-
-local function CheckTorchTushita()
-    local a
-    if not game:GetService("Workspace").Map.Turtle.QuestTorches.Torch1.Particles.Main.Enabled then a = "1"
-    elseif not game:GetService("Workspace").Map.Turtle.QuestTorches.Torch2.Particles.Main.Enabled then a = "2"
-    elseif not game:GetService("Workspace").Map.Turtle.QuestTorches.Torch3.Particles.Main.Enabled then a = "3"
-    elseif not game:GetService("Workspace").Map.Turtle.QuestTorches.Torch4.Particles.Main.Enabled then a = "4"
-    elseif not game:GetService("Workspace").Map.Turtle.QuestTorches.Torch5.Particles.Main.Enabled then a = "5" end
-    for i, v in next, game:GetService("Workspace").Map.Turtle.QuestTorches:GetChildren() do
-        if v:IsA("MeshPart") and string.find(v.Name, a) and not v.Particles.Main.Enabled then
-            return v
-        end
-    end
-end
-
-local function BuyGear()
-    game.ReplicatedStorage.Remotes.CommF_:InvokeServer("UpgradeRace", "Buy")
-end
-
-local function GetPlayerKillTrial()
-    local Chrs
+-- Auto Quest Race
+spawn(function()
     pcall(function()
-        local TempleCFrame = CFrame.new(28730.0645, 14887.5371, -91.0957718, 0.557085216, -4.57713725e-08, 0.830455363, 9.81919115e-08, 1, -1.07530047e-08, -0.830455363, 8.75343389e-08, 0.557085216)
-        if game.Players.LocalPlayer.PlayerGui.Main.Timer.Visible then
-            if GetDistance(TempleCFrame) <= 380 then
-                for i, v in pairs(game.Players:GetChildren()) do
-                    if v.Name ~= game.Players.LocalPlayer.Name and (GetDistance(TempleCFrame, v.Character.HumanoidRootPart) <= 300) and v.Character.Humanoid.Health > 0 then
-                        Chrs = v
+        while wait() do
+            if _G.AutoQuestRace then
+                local race = game:GetService("Players").LocalPlayer.Data.Race.Value
+                if race == "Human" or race == "Ghoul" then
+                    for _,v in pairs(game.Workspace.Enemies:GetDescendants()) do
+                        if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                            pcall(function()
+                                repeat wait(0.1)
+                                    v.Humanoid.Health = 0
+                                    v.HumanoidRootPart.CanCollide = false
+                                    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                                until not _G.AutoQuestRace or not v.Parent or v.Humanoid.Health <= 0
+                            end)
+                        end
+                    end
+                elseif race == "Skypiea" then
+                    for _,v in pairs(game:GetService("Workspace").Map.SkyTrial.Model:GetDescendants()) do
+                        if v.Name == "snowisland_Cylinder.081" then
+                            BTPZ(v.CFrame * CFrame.new(0,0,0))
+                        end
+                    end
+                elseif race == "Fishman" then
+                    for _,v in pairs(game:GetService("Workspace").SeaBeasts.SeaBeast1:GetDescendants()) do
+                        if v.Name == "HumanoidRootPart" then
+                            Tween(v.CFrame * Pos)
+                            EquipToolByType("Melee")
+                            VirtualPress("F5")
+                            VirtualPress("F9")
+                            EquipToolByType("Blox Fruit")
+                            VirtualPress("F5")
+                            VirtualPress("F9")
+                            EquipToolByType("Sword")
+                            VirtualPress("F5")
+                            VirtualPress("F9")
+                            EquipToolByType("Gun")
+                            VirtualPress("F5")
+                            VirtualPress("F9")
+                        end
+                    end
+                elseif race == "Cyborg" then
+                    Tween(CFrame.new(28654, 14898.7832, -30))
+                elseif race == "Mink" then
+                    for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+                        if v.Name == "StartPoint" then
+                            Tween(v.CFrame * CFrame.new(0,10,0))
+                        end
                     end
                 end
             end
         end
     end)
-    return Chrs
-end
+end)
 
-local function TweenTempleLegit(fk)
-    TweenTemple()
-    local AllNPCS = getnilinstances()
-    for i, v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-        table.insert(AllNPCS, v)
+-- Seção Auto Train
+local Mastery = Race:AddSection("Auto Train")
+
+-- Auto Train
+local ToggleAutoAcientQuest = Race:AddToggle("ToggleAutoAcientQuest", {Title = "Auto Train", Description = "", Default = false })
+ToggleAutoAcientQuest:OnChanged(function(Value)
+    AutoFarmAcient = Value
+end)
+Options.ToggleAutoAcientQuest:SetValue(false)
+
+local AcientCframe = CFrame.new(216.211181640625, 126.9352035522461, -12599.0732421875)
+
+-- Auto Farm Ancient
+spawn(function()
+    pcall(function()
+        while wait() do
+            if AutoFarmAcient then
+                if game.Players.LocalPlayer.Character.RaceTransformed.Value == true then
+                    AutoFarmAcient = false
+                    toTarget(AcientCframe)
+                end
+            end
+        end
+    end)
+end)
+
+spawn(function()
+    while wait() do
+        if AutoFarmAcient then
+            pcall(function()
+                local enemies = game:GetService("Workspace").Enemies
+                if enemies:FindFirstChild("Cocoa Warrior") or enemies:FindFirstChild("Chocolate Bar Battler") or enemies:FindFirstChild("Sweet Thief") or enemies:FindFirstChild("Candy Rebel") then
+                    for _,v in pairs(enemies:GetChildren()) do
+                        if v.Name == "Cocoa Warrior" or v.Name == "Chocolate Bar Battler" or v.Name == "Sweet Thief" or v.Name == "Candy Rebel" then
+                            if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                                bringmob = true
+                                repeat wait(_G.Fast_Delay)
+                                    AttackNoCoolDown()
+                                    AutoHaki()
+                                    EquipTool(SelectWeapon)
+                                    v.HumanoidRootPart.CanCollide = false
+                                    v.Humanoid.WalkSpeed = 0
+                                    v.Head.CanCollide = false
+                                    FarmPos = v.HumanoidRootPart.CFrame
+                                    MonFarm = v.Name
+                                    Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX, posY, posZ))
+                                until not AutoFarmAcient or not v.Parent or v.Humanoid.Health <= 0
+                                bringmob = false
+                            end
+                        end
+                    end
+                else
+                    toTarget(AcientCframe)
+                end
+            end)
+        end
     end
-    for i, v in pairs(AllNPCS) do
-        if v.Name == "Mysterious Force" then TempleMysteriousNPC1 = v end
-        if v.Name == "Mysterious Force3" then TempleMysteriousNPC2 = v end
+end)
+
+spawn(function()
+    pcall(function()
+        while wait() do
+            if AutoFarmAcient then
+                if game.Players.LocalPlayer.Character.RaceTransformed.Value == false then
+                    AutoFarmAcient = true
+                end
+            end
+        end
+    end)
+end)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if AutoFarmAcient then
+                VirtualPress("Y")
+                wait(0.1)
+                VirtualPress("Y")
+            end
+        end)
     end
-    Tweento(TempleMysteriousNPC2.HumanoidRootPart.CFrame)
-    wait(0.5)
-    if (TempleMysteriousNPC2.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 15 then
-        game.ReplicatedStorage.Remotes.CommF_:InvokeServer("RaceV4Progress", "TeleportBack")
-    end
-    if not fk then
-        if (TempleMysteriousNPC1.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 15 then
-            game.ReplicatedStorage.Remotes.CommF_:InvokeServer("RaceV4Progress", "Teleport")
+end)
+
+-- Funções auxiliares
+function EquipToolByType(toolType)
+    for _,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+        if v:IsA("Tool") and v.ToolTip == toolType then
+            game.Players.LocalPlayer.Character.Humanoid:EquipTool(v)
         end
     end
 end
 
--- Interface usando Roact
-local V4Interface = Roact.Component:extend("V4Interface")
-
-function V4Interface:init()
-    self:setState({
-        autoActivateColor = false,
-        buyGear = false,
-        checkTorchTushita = false,
-        getPlayerKillTrial = false,
-        tweenTempleLegit = false
-    })
+function VirtualPress(key)
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, key, false, game)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, key, false, game)
 end
-
-function V4Interface:render()
-    return Roact.createElement("ScreenGui", nil, {
-        MainFrame = Roact.createElement("Frame", {
-            Size = UDim2.new(0, 300, 0, 400),
-            Position = UDim2.new(0.5, -150, 0.5, -200),
-            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
-            BorderSizePixel = 0
-        }, {
-            UIListLayout = Roact.createElement("UIListLayout", {
-                Padding = UDim.new(0, 10),
-                FillDirection = Enum.FillDirection.Vertical,
-                HorizontalAlignment = Enum.HorizontalAlignment.Center,
-                VerticalAlignment = Enum.VerticalAlignment.Top
-            }),
-            Title = Roact.createElement("TextLabel", {
-                Text = "V4 Automation",
-                Size = UDim2.new(1, 0, 0, 50),
-                BackgroundTransparency = 1,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextScaled = true
-            }),
-            AutoActivateColorButton = Roact.createElement("TextButton", {
-                Text = "Auto Activate Color",
-                Size = UDim2.new(1, -20, 0, 50),
-                BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                [Roact.Event.Activated] = function()
-                    self:setState({ autoActivateColor = not self.state.autoActivateColor })
-                    if self.state.autoActivateColor then
-                        AutoActiveColorRip_Indra()
-                    end
-                end
-            }),
-            BuyGearButton = Roact.createElement("TextButton", {
-                Text = "Buy Gear",
-                Size = UDim2.new(1, -20, 0, 50),
-                BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                [Roact.Event.Activated] = function()
-                    self:setState({ buyGear = not self.state.buyGear })
-                    if self.state.buyGear then
-                        BuyGear()
-                    end
-                end
-            }),
-            CheckTorchTushitaButton = Roact.createElement("TextButton", {
-                Text = "Check Torch Tushita",
-                Size = UDim2.new(1, -20, 0, 50),
-                BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                [Roact.Event.Activated] = function()
-                    self:setState({ checkTorchTushita = not self.state.checkTorchTushita })
-                    if self.state.checkTorchTushita then
-                        CheckTorchTushita()
-                    end
-                end
-            }),
-            GetPlayerKillTrialButton = Roact.createElement("TextButton", {
-                Text = "Get Player Kill Trial",
-                Size = UDim2.new(1, -20, 0, 50),
-                BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                [Roact.Event.Activated] = function()
-                    self:setState({ getPlayerKillTrial = not self.state.getPlayerKillTrial })
-                    if self.state.getPlayerKillTrial then
-                        GetPlayerKillTrial()
-                    end
-                end
-            }),
-            TweenTempleLegitButton = Roact.createElement("TextButton", {
-                Text = "Tween to Temple",
-                Size = UDim2.new(1, -20, 0, 50),
-                BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                [Roact.Event.Activated] = function()
-                    self:setState({ tweenTempleLegit = not self.state.tweenTempleLegit })
-                    if self.state.tweenTempleLegit then
-                        TweenTempleLegit()
-                    end
-                end
-            })
-        })
-    })
-end
-
--- Montando a interface no jogo
-local handle = Roact.mount(Roact.createElement(V4Interface), game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-
--- Função para desmontar a interface
-local function unmountInterface()
-    Roact.unmount(handle)
-end
-
-game:BindToClose(unmountInterface)
